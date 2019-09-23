@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+  gobairflow:
+    build: src
+    container_name: gobairflow
+    environment:
+      MESSAGE_BROKER_ADDRESS: rabbitmq
+      DATABASE_PORT_OVERRIDE: 5432
+      DATABASE_HOST_OVERRIDE: management_database
+      GOB_SHARED_DIR: /app/shared
+      GOBOPTIONS: ${GOBOPTIONS}
+    volumes:
+      - gob-volume:/app/shared
+    ports:
+      - "8088:8088"
+
+volumes:
+  gob-volume:
+    external: true
+
+networks:
+  default:
+    external:
+      name: gob-network
