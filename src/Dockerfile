@@ -2,7 +2,7 @@ FROM amsterdam/docker_python:latest
 MAINTAINER datapunt@amsterdam.nl
 
 # Airflow
-ARG AIRFLOW_VERSION=1.10.4
+ARG AIRFLOW_VERSION=1.10.5
 ARG AIRFLOW_USER_HOME=/usr/local/airflow
 ARG AIRFLOW_DEPS=""
 ARG PYTHON_DEPS=""
