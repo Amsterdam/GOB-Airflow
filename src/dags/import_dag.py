@@ -119,6 +119,11 @@ pipelines = [
         "collection": "stadsdelen",
         "application": "DGDialog",
     },
+    {
+        "catalogue": "bgt",
+        "collection": "onderbouw",
+        "application": None,
+    },
 ]
 
 for pipeline in pipelines:
