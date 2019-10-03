@@ -2,7 +2,7 @@
 
 TRY_LOOP="20"
 
-: "${POSTGRES_HOST:="management_database"}"
+: "${POSTGRES_HOST:="airflow_database"}"
 : "${POSTGRES_PORT:="5432"}"
 : "${POSTGRES_USER:="gob"}"
 : "${POSTGRES_PASSWORD:="insecure"}"
