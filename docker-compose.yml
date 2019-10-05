@@ -1,15 +1,26 @@
 version: '3.0'
 
 services:
+  airflow_database:
+    image: amsterdam/postgres
+    ports:
+      - "5409:5432"
+    container_name: airflow_database
+    environment:
+      POSTGRES_PASSWORD: insecure
+      POSTGRES_DB: airflow
+      POSTGRES_USER: gob
+    volumes:
+      - "~/.ssh/datapunt.key:/root/.ssh/datapunt.key"
+
   gobairflow:
     build: src
     container_name: gobairflow
     environment:
       MESSAGE_BROKER_ADDRESS: rabbitmq
-      DATABASE_PORT_OVERRIDE: 5432
-      DATABASE_HOST_OVERRIDE: management_database
+#      DATABASE_PORT_OVERRIDE: 5432
+#      DATABASE_HOST_OVERRIDE: management_database
       GOB_SHARED_DIR: /app/shared
-      GOBOPTIONS: ${GOBOPTIONS}
     volumes:
       - gob-volume:/app/shared
     ports:
