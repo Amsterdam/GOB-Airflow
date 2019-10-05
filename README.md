@@ -52,5 +52,7 @@ Go to [Airflow Admin GUI](http://localhost:8088/admin/) with your browser.
 
 In Airflow Admin GUI you can start with the following:
 
-    1. Go to [Enable Import DAG](http://localhost:8088/admin/airflow/graph?dag_id=import_dag) and enable this DAG.
-    2. [Trigger Import DAG](http://localhost:8088/admin/airflow/trigger?dag_id=import_dag&origin=%2Fadmin%2Fairflow%2Ftree%3Fdag_id%3Dimport_dag).
+    1. left upper corner: Set DAG: import_dag to On 
+    2. Go to [Enable Import DAG](http://localhost:8088/admin/airflow/graph?dag_id=import_dag) and enable this DAG.
+    3. Start DAG by clicking Trigger DAG
+    4. ?? [Trigger Import DAG](http://localhost:8088/admin/airflow/trigger?dag_id=import_dag&origin=%2Fadmin%2Fairflow%2Ftree%3Fdag_id%3Dimport_dag).
