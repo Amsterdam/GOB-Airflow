@@ -1,10 +1,13 @@
+import logging
+
+from airflow.exceptions import AirflowException
 from airflow.operators.sensors import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
 
 from colour import Color
 
 from utils.connection import Connection
-from utils.config import RESULT_QUEUE
+from config.rabbitmq_config import RESULT_QUEUE
 
 
 class GOBSensor(BaseSensorOperator):
@@ -21,24 +24,33 @@ class GOBSensor(BaseSensorOperator):
         result = None
         for msg in self.connection.consume(RESULT_QUEUE):
             if msg is None:
-                print("No message yet. Waiting...")
+                logging.info("No message yet. Waiting...")
                 return True
 
             if msg['header']['airflow']["run_id"] != context['dag_run'].run_id:
-                print("Skip message for other workflow")
+                logging.info("Skip message for other workflow")
                 continue
 
             self.connection.ack(msg)
 
             status = msg.get('status')
             if status is not None:
-                print("Status", status)
+                logging.info(f"Status: {status}")
                 continue
 
-            # todo fail on errors
             summary = msg.get('summary')
             if summary is not None:
-                print("Result received")
+                logging.info("Result received")
+                errors = msg["summary"]["errors"]
+                warnings = msg["summary"]["warnings"]
+                if warnings:
+                    logging.warning(f"Task warnings ({len(warnings)}):")
+                    logging.warning("\n".join(warnings))
+                if errors:
+                    logging.warning(f"Task errors ({len(errors)}):")
+                    logging.error("\n".join(errors))
+                    raise AirflowException("Task has failed")
+
                 result = msg
                 context['task_instance'].xcom_push(key=context['dag_run'].run_id, value=msg)
                 continue
