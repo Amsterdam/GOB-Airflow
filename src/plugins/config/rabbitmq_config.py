@@ -1,3 +1,10 @@
+"""
+RabbitMQ Configuration
+
+The connection with RabbitMQ is setup and initialised using the information in this module
+
+This includes Exchange, Queue and Routing key information that is specific for GOB
+"""
 import os
 import pika
 

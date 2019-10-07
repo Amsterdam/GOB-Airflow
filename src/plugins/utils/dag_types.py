@@ -1,8 +1,19 @@
+"""
+GOB standard workflows: import, relate, export
+
+"""
 from operators.gob_operator import GOBOperator
 from sensors.gob_sensor import GOBSensor
 from utils.dag_utils import dummy_task, nyi_dag
 
+
 def _relate_dag(dag, catalogue, collection=None, application=None):
+    """
+    Populate the given dag with a relate workflow for the given catalogue, collection and application
+
+    :param dag: Any DAG instance
+    :return: the DAG instance
+    """
     dag_id = dag.dag_id
     with dag:
         start = dummy_task(dag, "start")
@@ -43,16 +54,16 @@ def _relate_dag(dag, catalogue, collection=None, application=None):
 
         end = dummy_task(dag, "end")
 
-        start >> \
-        relate >> relate_end >> \
-        check >> check_end >> \
-        end_of_workflow >> \
-        end
+        start >> relate >> relate_end >> check >> check_end >> end_of_workflow >> end
 
     return dag
 
 
 def get_dag_creator(dag_type):
+    """
+    Return a creator method for the given dag_type
+    """
     return {
+        # Currently only relate has been implemented
         'relate': _relate_dag
     }.get(dag_type, nyi_dag)

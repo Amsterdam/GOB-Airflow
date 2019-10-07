@@ -1,3 +1,8 @@
+"""
+GOB Configuration
+
+All DAGs and properties of DAGs are read from the info in this module
+"""
 CATALOGUES = {
     'brk': {
         'collections': {

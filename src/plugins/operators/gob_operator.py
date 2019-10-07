@@ -1,3 +1,8 @@
+"""
+GOB Operator
+
+The GOB operator allows to start and control workflows in GOB
+"""
 import logging
 
 from airflow.models import BaseOperator
@@ -7,6 +12,7 @@ from colour import Color
 
 from utils.connection import Connection
 from config.rabbitmq_config import RESULT_KEY, EXCHANGE, REQUEST_KEY
+
 
 class GOBOperator(BaseOperator):
     ui_color = Color("lightgreen").hex
@@ -20,6 +26,9 @@ class GOBOperator(BaseOperator):
                  application=None,
                  *args,
                  **kwargs):
+        """
+        Initializes the GOB operator for the specific workflow
+        """
         super().__init__(*args, **kwargs)
 
         self.job_name = job_name
@@ -31,9 +40,18 @@ class GOBOperator(BaseOperator):
         self.connection = Connection()
 
     def execute(self, context):
+        """
+        Execute the workflow step
+
+        Any message that is the result of a previous step in a task is available in and read from a XCom.
+
+        :param context: Airflow context
+        :return: The result of the publish of the GOB Message
+        """
         message = context['task_instance'].xcom_pull(key=context['dag_run'].run_id)
 
         if message is None:
+            # Initialize a message if no message from a previous step is available
             message = {
                 "header": {
                     "catalogue": self.catalogue,
@@ -56,4 +74,4 @@ class GOBOperator(BaseOperator):
         message["summary"] = {}
 
         logging.info("Task started")
-        self.connection.publish(EXCHANGE, REQUEST_KEY, message)
+        return self.connection.publish(EXCHANGE, REQUEST_KEY, message)

@@ -1,11 +1,22 @@
-from airflow import DAG
+"""
+DAG utils
+
+Various DAG utility methods
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.subdag_operator import SubDagOperator
 
+# Execution type of SubDAGs within a DAG
 SEQUENTIAL = "sequential"
 PARALLEL = "parallel"
 
+
 def compose_dag(dag, subdags, mode, default_args):
+    """
+    Populate the given dag with the given subdags
+
+    Subdags can be executed sequentially or in parallel
+    """
     dag_id = dag.dag_id
     with dag:
         start = dummy_task(dag, "start")
@@ -34,19 +45,23 @@ def compose_dag(dag, subdags, mode, default_args):
         end = dummy_task(dag, "end")
 
         lasttask >> end
+    return dag
 
 
 def dummy_task(dag, name):
+    """
+    Returns a dummy task for the given dag. The name is used to construct the task_id of the task
+    """
     return DummyOperator(task_id=f"{dag.dag_id}_{name}", dag=dag)
 
 
-def nyi_dag(dag, catalogue, collection=None, application=None):
-    dag_id = dag.dag_id
+def nyi_dag(dag, *args, **kwargs):
+    """
+    Populates the given dag with a dummy start and end task
+    """
     with dag:
         start = dummy_task(dag, "start")
-
         end = dummy_task(dag, "end")
-
         start >> end
 
     return dag
