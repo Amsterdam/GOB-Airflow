@@ -24,7 +24,7 @@ node {
 
     stage('Test') {
         tryStep "test", {
-            sh "docker-compose -p gob_airflow -f src/.jenkins/test/docker-compose.yml build --no-cache gobairflow && " +
+            sh "docker-compose -p gob_airflow -f src/.jenkins/test/docker-compose.yml build --no-cache && " +
                "docker-compose -p gob_airflow -f src/.jenkins/test/docker-compose.yml run -u root --rm test"
 
         }, {
