@@ -1,7 +1,7 @@
 import pika
 import json
 
-from utils.config import RESULT_QUEUE, RESULT_KEY, EXCHANGE, CONNECTION_PARAMS
+from config.rabbitmq_config import RESULT_QUEUE, RESULT_KEY, EXCHANGE, CONNECTION_PARAMS
 
 class Connection:
     DELIVERY_TAG = '_delivery_tag'

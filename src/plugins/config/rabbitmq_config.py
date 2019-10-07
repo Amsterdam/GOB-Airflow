@@ -1,6 +1,4 @@
 import os
-from datetime import datetime
-
 import pika
 
 MESSAGE_BROKER = os.getenv("MESSAGE_BROKER_ADDRESS", "localhost")
@@ -22,33 +20,3 @@ EXCHANGE = "gob.workflow"
 REQUEST_KEY = "workflow.request"
 RESULT_QUEUE = "airflow.jobstep.result.queue"
 RESULT_KEY = "airflow.result"
-
-DEFAULT_ARGS = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'start_date': datetime(2019, 10, 3)
-}
-
-CATALOGUES = {
-    'brk': {
-        'collections': {
-            'meta': {}
-        }
-    },
-    'nap': {
-        'collections': {
-            'peilmerken': {}
-        }
-    },
-    'gebieden': {
-        'collections': {
-            'stadsdelen': {},
-            'wijken': {}
-        }
-    }
-}
-
-for catalogue_name, catalogue in CATALOGUES.items():
-    catalogue['name'] = catalogue_name
-    for collection_name, collection in catalogue['collections'].items():
-        collection['name'] = collection_name
