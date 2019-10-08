@@ -38,7 +38,7 @@ class GOBSensor(BaseSensorOperator):
         for msg in self.connection.consume(RESULT_QUEUE):
             if msg is None:
                 logging.info("No message yet. Waiting...")
-                return None
+                break
 
             if msg['header']['airflow']["run_id"] != context['dag_run'].run_id:
                 logging.info("Skip message for other workflow")
