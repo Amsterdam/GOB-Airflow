@@ -23,7 +23,7 @@ class GOBOperator(BaseOperator):
                  step_name=None,
                  catalogue=None,
                  collection=None,
-                 application=None,
+                 optional=None,
                  *args,
                  **kwargs):
         """
@@ -35,7 +35,7 @@ class GOBOperator(BaseOperator):
         self.step_name = step_name
         self.catalogue = catalogue
         self.collection = collection
-        self.application = application
+        self.optional = optional or {}
 
         self.connection = Connection()
 
@@ -56,7 +56,7 @@ class GOBOperator(BaseOperator):
                 "header": {
                     "catalogue": self.catalogue,
                     "collection": self.collection,
-                    "application": self.application,
+                    **self.optional,
                     "result_key": RESULT_KEY,
                     "airflow": {
                         "dag_id": context['dag_run'].dag_id,

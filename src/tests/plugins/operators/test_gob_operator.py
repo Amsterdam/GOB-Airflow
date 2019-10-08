@@ -42,7 +42,6 @@ class TestGOBOperator(TestCase):
                 "header": {
                     "catalogue": "Any catalogue",
                     "collection": "Any collection",
-                    "application": "Any application",
                     "result_key": RESULT_KEY,
                     "airflow": {
                         "dag_id": ANY,
