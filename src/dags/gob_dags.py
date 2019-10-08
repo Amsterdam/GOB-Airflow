@@ -11,7 +11,7 @@ from datetime import datetime
 
 from airflow import DAG
 
-from config.gob_config import CATALOGUES
+from config.gob_config import CATALOGUES, PIPELINES, DEFAULT_PIPELINE_ARGS
 from utils.dag_types import get_dag_creator
 from utils.dag_utils import compose_dag, SEQUENTIAL, PARALLEL
 
@@ -22,16 +22,13 @@ DEFAULT_ARGS = {
     'start_date': datetime(2019, 10, 3)
 }
 
-# The basic GOB pipeline is to import, relate and finally export
-PIPELINE = ['import', 'relate', 'export']
-
 # Main GOB DAG
 gob_dag = DAG(dag_id="GOB",
               description=f"GOB main worfklow",
               schedule_interval=None,
               default_args=DEFAULT_ARGS)
 gob_subdags = []
-for pipeline in PIPELINE:
+for pipeline in PIPELINES:
     # Pipeline DAG, eg import, relate or export
     pipeline_dag = DAG(dag_id=f"GOB.{pipeline}",
                        description=f"GOB {pipeline} worfklow",
@@ -60,7 +57,7 @@ for pipeline in PIPELINE:
             create_dag(collection_dag,
                        catalogue=catalogue_name,
                        collection=collection_name,
-                       application=None)
+                       **DEFAULT_PIPELINE_ARGS[pipeline])
             catalogue_subdags.append(collection_dag)
 
         # Execute collections within catalogue in parallel
@@ -72,4 +69,4 @@ for pipeline in PIPELINE:
     gob_subdags.append(pipeline_dag)
 
 # Handle pipeline steps sequential
-compose_dag(gob_dag, [globals()[step] for step in PIPELINE], SEQUENTIAL, DEFAULT_ARGS)
+compose_dag(gob_dag, [globals()[step] for step in PIPELINES], SEQUENTIAL, DEFAULT_ARGS)

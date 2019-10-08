@@ -13,7 +13,7 @@ class TestDagTypes(TestCase):
     def test_import_dag(self, mock_sensor, mock_operator):
         dag = MagicMock()
         dag.dag_id = "Any dagid"
-        result = _import_dag(dag, "Any catalogue", "Any collection", "Any application")
+        result = _import_dag(dag, "Any catalogue", "Any collection")
         self.assertEqual(dag, result)
 
         self.assertEqual(len(mock_operator.call_args_list), 6)
@@ -29,7 +29,7 @@ class TestDagTypes(TestCase):
     def test_relate_dag(self, mock_sensor, mock_operator):
         dag = MagicMock()
         dag.dag_id = "Any dagid"
-        result = _relate_dag(dag, "Any catalogue", "Any collection", "Any application")
+        result = _relate_dag(dag, "Any catalogue", "Any collection")
         self.assertEqual(dag, result)
 
         self.assertEqual(len(mock_operator.call_args_list), 3)
@@ -45,14 +45,14 @@ class TestDagTypes(TestCase):
     def test_export_dag(self, mock_sensor, mock_operator):
         dag = MagicMock()
         dag.dag_id = "Any dagid"
-        result = _export_dag(dag, "Any catalogue", "Any collection", "Any application")
+        result = _export_dag(dag, "Any catalogue", "Any collection")
         self.assertEqual(dag, result)
 
         self.assertEqual(len(mock_operator.call_args_list), 3)
         self.assertEqual(len(mock_sensor.call_args_list), 2)
 
         jobs = [call[1].get('job_name', '') + call[1].get('step_name', '') for call in mock_operator.call_args_list]
-        self.assertEqual(jobs, ['exportgenerate', 'exportcheck', ''])
+        self.assertEqual(jobs, ['exportgenerate', 'exporttest', ''])
 
     @patch('plugins.utils.dag_types.nyi_dag')
     def test_get_dag_creator(self, mock_nyi):
