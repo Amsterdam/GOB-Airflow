@@ -24,14 +24,14 @@ DEFAULT_ARGS = {
 
 # Main GOB DAG
 gob_dag = DAG(dag_id="GOB",
-              description=f"GOB main worfklow",
+              description=f"GOB main workflow",
               schedule_interval=None,
               default_args=DEFAULT_ARGS)
 gob_subdags = []
 for pipeline in PIPELINES:
     # Pipeline DAG, eg import, relate or export
     pipeline_dag = DAG(dag_id=f"GOB.{pipeline}",
-                       description=f"GOB {pipeline} worfklow",
+                       description=f"GOB {pipeline} workflow",
                        schedule_interval=None,
                        default_args=DEFAULT_ARGS)
     globals()[pipeline] = pipeline_dag
