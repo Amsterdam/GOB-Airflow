@@ -62,6 +62,10 @@ class GOBSensor(BaseSensorOperator):
         """
         Handle a result message for the current task
         """
+        # Save result message for any successor task
+        context['task_instance'].xcom_push(key=context['dag_run'].run_id, value=msg)
+
+        # Handle errors and warnings
         logging.info("Result received")
         errors = msg["summary"]["errors"]
         warnings = msg["summary"]["warnings"]
@@ -72,6 +76,4 @@ class GOBSensor(BaseSensorOperator):
             logging.warning(f"Task errors ({len(errors)}):")
             logging.error("\n".join(errors))
             raise AirflowException("Task has failed")
-        # Save result message for any successor task
-        context['task_instance'].xcom_push(key=context['dag_run'].run_id, value=msg)
         return msg
