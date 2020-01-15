@@ -48,16 +48,16 @@ CATALOGUES = {
     #         'rollagen': {}
     #     }
     # },
-    # 'gebieden': {
-    #     'collections': {
-    #         'stadsdelen': {},
-    #         'wijken': {},
-    #         'buurten': {},
-    #         'bouwblokken': {},
-    #         'ggwgebieden': {},
-    #         'ggpgebieden': {}
-    #     }
-    # },
+    'gebieden': {
+        'collections': {
+            'stadsdelen': {'application': 'DGDialog'},
+            'wijken': {'application': 'DGDialog'},
+            'buurten': {'application': 'DGDialog'},
+            'bouwblokken': {'application': 'DGDialog'},
+            'ggwgebieden': {'application': 'Basisinformatie'},
+            'ggpgebieden': {'application': 'Basisinformatie'}
+        }
+    },
     # 'bag': {
     #     'collections': {
     #         'woonplaatsen': {},

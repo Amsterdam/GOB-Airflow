@@ -54,10 +54,14 @@ for pipeline in PIPELINES:
 
             # Get the DAG for the pipeline, eg the relate pipeline
             create_dag = get_dag_creator(pipeline)
+
+            kwargs = dict(DEFAULT_PIPELINE_ARGS[pipeline])
+            if "application" in kwargs:
+                kwargs["application"] = collection.get("application")
             create_dag(collection_dag,
                        catalogue=catalogue_name,
                        collection=collection_name,
-                       **DEFAULT_PIPELINE_ARGS[pipeline])
+                       **kwargs)
             catalogue_subdags.append(collection_dag)
 
         # Execute collections within catalogue in parallel
