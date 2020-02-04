@@ -32,64 +32,64 @@ node {
         }
     }
 
-//    stage("Build image") {
-//        tryStep "build", {
-//            docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-//                def image = docker.build("datapunt/gob_airflow:${env.BUILD_NUMBER}",
-//                    "--no-cache " +
-//                    "--shm-size 1G " +
-//                    "--build-arg BUILD_ENV=acc" +
-//                    " src")
-//                image.push()
-//            }
-//        }
-//    }
+    stage("Build image") {
+        tryStep "build", {
+            docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
+                def image = docker.build("datapunt/gob_airflow:${env.BUILD_NUMBER}",
+                    "--no-cache " +
+                    "--shm-size 1G " +
+                    "--build-arg BUILD_ENV=acc" +
+                    " src")
+                image.push()
+            }
+        }
+    }
 }
 
 
 String BRANCH = "${env.BRANCH_NAME}"
 
 
-//if (BRANCH == "develop") {
-//
-//    node {
-//        stage('Push develop image') {
-//            tryStep "image tagging", {
-//                docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-//                    def image = docker.image("datapunt/gob_airflow:${env.BUILD_NUMBER}")
-//                    image.pull()
-//                    image.push("develop")
-//                }
-//            }
-//        }
-//    }
-//}
+if (BRANCH == "develop") {
+
+    node {
+        stage('Push develop image') {
+            tryStep "image tagging", {
+                docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
+                    def image = docker.image("datapunt/gob_airflow:${env.BUILD_NUMBER}")
+                    image.pull()
+                    image.push("develop")
+                }
+            }
+        }
+    }
+}
 
 
-//if (BRANCH == "master") {
-//
-//    node {
-//        stage('Push acceptance image') {
-//            tryStep "image tagging", {
-//                docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-//                    def image = docker.image("datapunt/gob_airflow:${env.BUILD_NUMBER}")
-//                    image.pull()
-//                    image.push("acceptance")
-//                }
-//            }
-//        }
-//    }
-//
-//    node {
-//        stage("Deploy to ACC") {
-//            tryStep "deployment", {
-//                build job: 'Subtask_Openstack_Playbook',
-//                    parameters: [
-//                        [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-//                        [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-gob-airflow.yml'],
-//                    ]
-//            }
-//        }
-//    }
-//
-//}
+if (BRANCH == "master") {
+
+    node {
+        stage('Push acceptance image') {
+            tryStep "image tagging", {
+                docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
+                    def image = docker.image("datapunt/gob_airflow:${env.BUILD_NUMBER}")
+                    image.pull()
+                    image.push("acceptance")
+                }
+            }
+        }
+    }
+
+    node {
+        stage("Deploy to ACC") {
+            tryStep "deployment", {
+                build job: 'Subtask_Openstack_Playbook',
+                    parameters: [
+                        [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                        [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-gob-airflow.yml'],
+                    ]
+            }
+        }
+    }
+
+}
