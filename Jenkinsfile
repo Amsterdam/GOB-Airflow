@@ -66,7 +66,7 @@ if (BRANCH == "develop") {
 }
 
 
-if (BRANCH == "master") {
+if (BRANCH == "develop") {
 
     node {
         stage('Push acceptance image') {
