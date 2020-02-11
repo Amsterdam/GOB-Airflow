@@ -67,8 +67,8 @@ class GOBSensor(BaseSensorOperator):
 
         # Handle errors and warnings
         logging.info("Result received")
-        errors = msg["summary"]["errors"]
-        warnings = msg["summary"]["warnings"]
+        errors = msg["summary"].get("errors", [])
+        warnings = msg["summary"].get("warnings", [])
         if warnings:
             logging.warning(f"Task warnings ({len(warnings)}):")
             logging.warning("\n".join(warnings))
