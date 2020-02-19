@@ -78,7 +78,7 @@ CATALOGUES = {
     # }
 }
 
-PIPELINES = ['import', 'relate', 'export']
+PIPELINES = ['import', 'relate', 'export', 'export_test']
 
 DEFAULT_PIPELINE_ARGS = {
     'import': {
@@ -86,6 +86,9 @@ DEFAULT_PIPELINE_ARGS = {
     },
     'relate': {},
     'export': {
+        'destination': "Objectstore"
+    },
+    'export_test': {
         'destination': "Objectstore"
     }
 }
