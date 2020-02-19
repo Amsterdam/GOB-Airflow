@@ -82,6 +82,16 @@ def _export_dag(dag, catalogue, collection=None, **kwargs):
     return _workflow(dag, "export", step_names, catalogue, collection, **kwargs)
 
 
+def _export_test_dag(dag, catalogue, collection=None, **kwargs):
+    """
+    Populate the given dag with an export workflow for the given catalogue, collection and optional args
+
+    :return: the DAG instance
+    """
+    step_names = ["export_test"]
+    return _workflow(dag, "export", step_names, catalogue, collection, **kwargs)
+
+
 def get_dag_creator(dag_type):
     """
     Return a creator method for the given dag_type
@@ -89,5 +99,6 @@ def get_dag_creator(dag_type):
     return {
         'import': _import_dag,
         'relate': _relate_dag,
-        'export': _export_dag
+        'export': _export_dag,
+        'export_test': _export_test_dag
     }.get(dag_type, nyi_dag)
