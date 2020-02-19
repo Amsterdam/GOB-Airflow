@@ -68,7 +68,7 @@ def _relate_dag(dag, catalogue, collection=None, **kwargs):
 
     :return: the DAG instance
     """
-    step_names = ["relate", "check"]
+    step_names = ["relate", "relate_table", "upload", "apply_events", "update_view", "check"]
     return _workflow(dag, "relate", step_names, catalogue, collection, **kwargs)
 
 
@@ -78,7 +78,7 @@ def _export_dag(dag, catalogue, collection=None, **kwargs):
 
     :return: the DAG instance
     """
-    step_names = ["generate", "test"]
+    step_names = ["generate"]
     return _workflow(dag, "export", step_names, catalogue, collection, **kwargs)
 
 
