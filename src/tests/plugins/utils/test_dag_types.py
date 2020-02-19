@@ -32,11 +32,11 @@ class TestDagTypes(TestCase):
         result = _relate_dag(dag, "Any catalogue", "Any collection")
         self.assertEqual(dag, result)
 
-        self.assertEqual(len(mock_operator.call_args_list), 3)
-        self.assertEqual(len(mock_sensor.call_args_list), 2)
+        self.assertEqual(len(mock_operator.call_args_list), 7)
+        self.assertEqual(len(mock_sensor.call_args_list), 6)
 
         jobs = [call[1].get('job_name', '') + call[1].get('step_name', '') for call in mock_operator.call_args_list]
-        self.assertEqual(jobs, ['relaterelate', 'relatecheck', ''])
+        self.assertEqual(jobs, ['relaterelate', 'relaterelate_table', 'relateupload', 'relateapply_events', 'relateupdate_view', 'relatecheck', ''])
 
     @patch('plugins.utils.dag_types.GOBOperator')
     @patch('plugins.utils.dag_types.GOBSensor')
@@ -48,11 +48,11 @@ class TestDagTypes(TestCase):
         result = _export_dag(dag, "Any catalogue", "Any collection")
         self.assertEqual(dag, result)
 
-        self.assertEqual(len(mock_operator.call_args_list), 3)
-        self.assertEqual(len(mock_sensor.call_args_list), 2)
+        self.assertEqual(len(mock_operator.call_args_list), 2)
+        self.assertEqual(len(mock_sensor.call_args_list), 1)
 
         jobs = [call[1].get('job_name', '') + call[1].get('step_name', '') for call in mock_operator.call_args_list]
-        self.assertEqual(jobs, ['exportgenerate', 'exporttest', ''])
+        self.assertEqual(jobs, ['exportgenerate', ''])
 
     @patch('plugins.utils.dag_types.nyi_dag')
     def test_get_dag_creator(self, mock_nyi):
