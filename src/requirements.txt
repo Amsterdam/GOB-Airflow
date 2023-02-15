@@ -4,4 +4,4 @@ colour==0.1.5
 flake8==3.5.0
 pytest==3.7.4
 pytest-cov==2.5.1
-Werkzeug==0.16.1
+Werkzeug==2.2.3
